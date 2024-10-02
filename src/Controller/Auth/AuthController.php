@@ -19,7 +19,7 @@ class AuthController extends AbstractController
         return $this->render('auth/register.html.twig');
     }
 
-    #[Route('/forgot', name: 'forgot')]
+    #[Route('/forgot-password', name: 'forgot')]
     public function forgot()
     {
         return $this->render('auth/forgot.html.twig');
