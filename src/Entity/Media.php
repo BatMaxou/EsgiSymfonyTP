@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Enum\MediaTypeEnum;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\MediaRepository;
@@ -22,9 +21,6 @@ class Media
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(enumType: MediaTypeEnum::class)]
-    private ?MediaTypeEnum $mediaType = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -89,18 +85,6 @@ class Media
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getMediaType(): ?MediaTypeEnum
-    {
-        return $this->mediaType;
-    }
-
-    public function setMediaType(MediaTypeEnum $mediaType): static
-    {
-        $this->mediaType = $mediaType;
-
-        return $this;
     }
 
     public function getTitle(): ?string
