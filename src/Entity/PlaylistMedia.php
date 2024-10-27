@@ -21,13 +21,6 @@ class PlaylistMedia
     #[ORM\JoinColumn(nullable: false)]
     private ?Media $media = null;
 
-    public function __construct(Playlist $playlist, Media $media)
-    {
-        $this->playlist = $playlist;
-        $this->media = $media;
-        $this->addedAt = new \DateTimeImmutable();
-    }
-
     public function getAddedAt(): ?\DateTimeImmutable
     {
         return $this->addedAt;
@@ -45,8 +38,22 @@ class PlaylistMedia
         return $this->playlist;
     }
 
+    public function setPlaylist(?Playlist $playlist): static
+    {
+        $this->playlist = $playlist;
+
+        return $this;
+    }
+
     public function getMedia(): ?Media
     {
         return $this->media;
+    }
+
+    public function setMedia(?Media $media): static
+    {
+        $this->media = $media;
+
+        return $this;
     }
 }

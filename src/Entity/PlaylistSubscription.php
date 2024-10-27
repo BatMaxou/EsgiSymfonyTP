@@ -21,6 +21,9 @@ class PlaylistSubscription
     #[ORM\JoinColumn(nullable: false)]
     private ?Playlist $playlist = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $subscribedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -46,6 +49,18 @@ class PlaylistSubscription
     public function setPlaylist(?Playlist $playlist): static
     {
         $this->playlist = $playlist;
+
+        return $this;
+    }
+
+    public function getSubscribedAt(): ?\DateTimeImmutable
+    {
+        return $this->subscribedAt;
+    }
+
+    public function setSubscribedAt(\DateTimeImmutable $subscribedAt): static
+    {
+        $this->subscribedAt = $subscribedAt;
 
         return $this;
     }
