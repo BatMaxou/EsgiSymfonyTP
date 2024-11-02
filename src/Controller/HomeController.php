@@ -16,7 +16,6 @@ class HomeController extends AbstractController
     {
         $movie = (new Movie());
 
-
         return $this->render('index.html.twig');
     }
 }

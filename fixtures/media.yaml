@@ -1,0 +1,32 @@
+App\Entity\Media:
+  media_template (template):
+    shortDescription: "Short description <current()>"
+    longDescription: "Long description <current()>"
+    releaseDate: '<dateTimeBetween("-1 week", "+1 week")>'
+    coverImage: "https://picsum.photos/200/300"
+    categories:
+      - "@category_action"
+      - "@category_adventure"
+    languages:
+      - "@lang_fr"
+      - "@lang_en"
+
+App\Entity\Movie:
+  movie_{1..50} (extends media_template):
+    title: "Film <current()> - <name()>"
+
+App\Entity\Serie:
+  serie_{1..50} (extends media_template):
+    title: "Série <current()> - <name()>"
+
+App\Entity\Season:
+  season_{1..50}:
+    seasonNumber: <numberBetween(1, 10)>
+    serie: "@serie_*"
+
+App\Entity\Episode:
+  episode_{1..100}:
+    title: "Episode <current()> - <name()>"
+    duration: "<numberBetween(10, 120)>"
+    releaseDate: '<dateTimeBetween("-1 year", "+1 year")>'
+    season: "@season_*"

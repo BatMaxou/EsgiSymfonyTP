@@ -13,7 +13,7 @@ class CategoryFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $word = $this->faker->word();
             $category = (new Category())
                 ->setName($word)

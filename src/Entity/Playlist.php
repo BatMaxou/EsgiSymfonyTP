@@ -19,10 +19,10 @@ class Playlist
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeImmutable $updatedAt = null;
 
     /**
@@ -114,6 +114,28 @@ class Playlist
     public function getPlaylistSubscriptions(): Collection
     {
         return $this->playlistSubscriptions;
+    }
+
+    public function addPlaylistMedia(PlaylistMedia $playlistMedia): static
+    {
+        if (!$this->playlistMedia->contains($playlistMedia)) {
+            $this->playlistMedia->add($playlistMedia);
+            $playlistMedia->setPlaylist($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlaylistMedia(PlaylistMedia $playlistMedia): static
+    {
+        if ($this->playlistMedia->removeElement($playlistMedia)) {
+            // set the owning side to null (unless already changed)
+            if ($playlistMedia->getPlaylist() === $this) {
+                $playlistMedia->setPlaylist(null);
+            }
+        }
+
+        return $this;
     }
 
     public function addPlaylistSubscription(PlaylistSubscription $playlistSubscription): static

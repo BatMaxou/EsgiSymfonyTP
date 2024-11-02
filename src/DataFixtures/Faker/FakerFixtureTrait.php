@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DataFixtures\Faker;
 
 use Faker\Factory;

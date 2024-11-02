@@ -11,3 +11,4 @@
 
 /docker-compose.override.yaml
 /.vscode
+/.php-cs-fixer.cache

@@ -13,9 +13,9 @@ class LanguageFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; ++$i) {
             $code = $this->faker->languageCode();
-            $language = (new Language)
+            $language = (new Language())
                 ->setName(ucfirst($code.$this->faker->word))
                 ->setCode($code);
 
