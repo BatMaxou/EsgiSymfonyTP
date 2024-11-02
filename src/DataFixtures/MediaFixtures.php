@@ -117,7 +117,7 @@ class MediaFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 1; $i < $this->faker->numberBetween(5, 10); ++$i) {
             $episode = (new Episode())
                 ->setSeason($season)
-                ->setDuration(new \DateTime($this->faker->time()))
+                ->setDuration($this->faker->numberBetween(10, 120))
                 ->setReleaseDate(new \DateTimeImmutable($this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s')))
                 ->setTitle($this->faker->word())
             ;
