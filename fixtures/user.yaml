@@ -1,11 +1,12 @@
 App\Entity\User:
-  user_{1..50}:
-    username: "<name()>"
+  user_template (template):
+    username: "<userName()>"
     email: "<email()>"
     password: "<password()>"
 
-  user_admin:
-    username: "admin"
-    email: "admin@example.com"
-    password: "azerty"
-    # accountStatus: "<(App\Enum\AccountStatusEnum)>"
+  user_admin (extends user_template):
+    email: 'admin@example.com'
+    password: 'azerty'
+
+  user_subscribed_{1..20} (extends user_template):
+    currentSubscription: '@subscription_*'

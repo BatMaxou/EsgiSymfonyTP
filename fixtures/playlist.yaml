@@ -1,0 +1,12 @@
+App\Entity\Playlist:
+  playlist_{1..50}:
+    name: 'Playlist <current()>'
+    createdAt: '<dateTimeBetween("-1 year", "now")>'
+    updatedAt: '<dateTimeBetween("-1 year", "now")>'
+    user: '@user_*'
+
+App\Entity\PlaylistSubscription:
+  playlistsubscription_{1..100}:
+    playlist: '@playlist_*'
+    user: '@user_*'
+    subscribedAt: '<dateTimeBetween("-1 year", "now")>'

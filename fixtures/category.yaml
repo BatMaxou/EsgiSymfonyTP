@@ -5,8 +5,16 @@ App\Entity\Category:
 
   category_adventure:
     name: "adventure"
-    label: "Adventure"
+    label: "Aventure"
 
   category_comedie:
     name: "comedie"
-    label: "Comedie"
+    label: "Comédie"
+
+  category_science_fiction:
+    name: "science-fiction"
+    label: "Science-fiction"    
+
+  category_thriller:
+    name: "thriller"
+    label: "Thriller"
