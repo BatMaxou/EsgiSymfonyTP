@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Movie;
-use App\Repository\MovieRepository;
-use App\Repository\SerieRepository;
+use App\Entity\PlaylistSubscription;
+use App\Repository\MediaRepository;
+use App\Repository\PlaylistRepository;
+use App\Repository\PlaylistSubscriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -12,10 +13,12 @@ use Symfony\Component\Routing\Attribute\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'home')]
-    public function home(MovieRepository $movieRepository, SerieRepository $serieRepository): Response
+    public function home(MediaRepository $mediaRepository,): Response
     {
-        $movie = (new Movie());
+        $popularMedias = $mediaRepository->findPopular(9);
 
-        return $this->render('index.html.twig');
+        return $this->render('index.html.twig', [
+            'popularMedias' => $popularMedias
+        ]);
     }
 }

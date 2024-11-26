@@ -2,26 +2,33 @@
 
 namespace App\Controller\Movie;
 
+use App\Entity\Movie;
+use App\Repository\PlaylistRepository;
+use App\Repository\PlaylistSubscriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Attribute\Route;
 
 class MovieController extends AbstractController
 {
-    #[Route('/movies/discover', name: 'discover')]
-    public function discover()
-    {
-        return $this->render('movie/discover.html.twig');
-    }
-
     #[Route('/movies', name: 'movies')]
-    public function movies()
-    {
-        return $this->render('movie/lists.html.twig');
+    public function movies(
+        PlaylistRepository $playlistRepository,
+        PlaylistSubscriptionRepository $playlistSubscriptionRepository,
+    ) {
+        $myPlaylists = $playlistRepository->findAll();
+        $myPlaylistSubscriptions = $playlistSubscriptionRepository->findAll();
+
+        return $this->render('movie/lists.html.twig', [
+            'myPlaylists' => $myPlaylists,
+            'myPlaylistSubscriptions' => $myPlaylistSubscriptions,
+        ]);
     }
 
-    #[Route('/movies/detail', name: 'movie')]
-    public function movie()
+    #[Route('/movies/{id}/detail', name: 'movie')]
+    public function movie(Movie $movie)
     {
-        return $this->render('movie/detail.html.twig');
+        return $this->render('movie/detail.html.twig', [
+            'movie' => $movie,
+        ]);
     }
 }
