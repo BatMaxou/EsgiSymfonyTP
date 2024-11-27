@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use App\Enum\AccountStatusEnum;
+use App\Enum\RoleEnum;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -30,6 +34,12 @@ class User
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Subscription $currentSubscription = null;
+
+    /**
+     * @var RoleEnum[]
+     */
+    #[ORM\Column(type: Types::JSON)]
+    private array $roles;
 
     /**
      * @var Collection<int, Comment>
@@ -68,6 +78,7 @@ class User
         $this->playlistSubscriptions = new ArrayCollection();
         $this->subscriptionHistories = new ArrayCollection();
         $this->watchHistories = new ArrayCollection();
+        $this->roles[] = RoleEnum::USER;
     }
 
     public function getId(): ?int
@@ -133,6 +144,14 @@ class User
         $this->currentSubscription = $currentSubscription;
 
         return $this;
+    }
+
+    /**
+     * @return RoleEnum[]
+     */
+    public function getRoles(): array
+    {
+        return $this->roles;
     }
 
     /**
@@ -284,4 +303,11 @@ class User
 
         return $this;
     }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    public function eraseCredentials(): void {}
 }

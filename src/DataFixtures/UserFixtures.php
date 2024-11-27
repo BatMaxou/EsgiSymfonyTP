@@ -16,6 +16,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\DataFixtures\Faker\FakerFixtureTrait;
 use App\Enum\CommentStatusEnum;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -28,6 +29,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     public function __construct(
         private readonly SubscriptionRepository $subscriptionRepository,
         private readonly MediaRepository $mediaRepository,
+        private readonly UserPasswordHasherInterface $userPasswordHasher,
     ) {
         $this->initializeFaker();
     }
@@ -64,12 +66,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
      */
     private function createUser(array $subscriptionIds): User
     {
-        return (new User())
+        $user = (new User())
             ->setEmail($this->faker->email())
-            ->setPassword($this->faker->password())
             ->setUsername($this->faker->userName())
             ->setAccountStatus($this->faker->randomElement(AccountStatusEnum::cases()))
             ->setCurrentSubscription($this->subscriptionRepository->find($this->faker->randomElement($subscriptionIds)));
+
+        return $user->setPassword($this->userPasswordHasher->hashPassword($user, 'test123'));
     }
 
     /**
@@ -80,14 +83,13 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         for ($i = 1; $i < $this->faker->numberBetween(2, 5); ++$i) {
             $subscription = $this->subscriptionRepository->find($this->faker->randomElement($subscriptionIds));
             $startDate = new \DateTimeImmutable($this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s'));
-            $endDate = $startDate->modify('+'.$subscription->getDurationInMonths().' months');
+            $endDate = $startDate->modify('+' . $subscription->getDurationInMonths() . ' months');
 
             $subscriptionHistory = (new SubscriptionHistory())
                 ->setUser($user)
                 ->setSubscription($subscription)
                 ->setStartDate($startDate)
-                ->setEndDate($endDate)
-            ;
+                ->setEndDate($endDate);
 
             $this->manager->persist($subscriptionHistory);
 
@@ -109,8 +111,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setName($this->faker->word())
                 ->setUser($user)
                 ->setCreatedAt($createdAt)
-                ->setUpdatedAt($createdAt)
-            ;
+                ->setUpdatedAt($createdAt);
 
             $this->manager->persist($playlist);
 
@@ -149,8 +150,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setUser($user)
                 ->setMedia($this->mediaRepository->find($this->faker->randomElement($mediaIds)))
                 ->setLastWatched(new \DateTimeImmutable($this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s')))
-                ->setNumberOfViews($this->faker->numberBetween(1, 10))
-            ;
+                ->setNumberOfViews($this->faker->numberBetween(1, 10));
 
             $this->manager->persist($watchHistory);
 
@@ -170,8 +170,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setPublisher($user)
                 ->setMedia($this->mediaRepository->find($this->faker->randomElement($mediaIds)))
                 ->setStatus($this->faker->randomElement(CommentStatusEnum::cases()))
-                ->setContent($this->faker->paragraph())
-            ;
+                ->setContent($this->faker->paragraph());
 
             $this->manager->persist($comment);
 
