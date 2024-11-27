@@ -3,6 +3,7 @@
 namespace App\Controller\Movie;
 
 use App\Entity\Movie;
+use App\Repository\CommentRepository;
 use App\Repository\PlaylistRepository;
 use App\Repository\PlaylistSubscriptionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,10 +26,13 @@ class MovieController extends AbstractController
     }
 
     #[Route('/movies/{id}/detail', name: 'movie')]
-    public function movie(Movie $movie)
+    public function movie(Movie $movie, CommentRepository $commentRepository)
     {
+        $parentComments = $commentRepository->getParentCommentsFor($movie);
+
         return $this->render('movie/detail.html.twig', [
             'movie' => $movie,
+            'parentComments' => $parentComments,
         ]);
     }
 }
