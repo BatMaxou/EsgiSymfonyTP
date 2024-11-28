@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Auth;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', [
+        return $this->render('auth/login.html.twig', [
             'last_username' => $lastUsername,
             'error' => $error,
         ]);
@@ -28,5 +28,29 @@ class SecurityController extends AbstractController
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route('/register', name: 'register')]
+    public function register()
+    {
+        return $this->render('auth/register.html.twig');
+    }
+
+    #[Route('/forgot-password', name: 'forgot')]
+    public function forgot()
+    {
+        return $this->render('auth/forgot.html.twig');
+    }
+
+    #[Route('/reset', name: 'reset')]
+    public function reset()
+    {
+        return $this->render('auth/reset.html.twig');
+    }
+
+    #[Route('/confirm', name: 'confirm')]
+    public function confirm()
+    {
+        return $this->render('auth/confirm.html.twig');
     }
 }
