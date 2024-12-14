@@ -18,8 +18,14 @@ class MovieController extends AbstractController
         PlaylistRepository $playlistRepository,
         PlaylistSubscriptionRepository $playlistSubscriptionRepository,
     ) {
-        $myPlaylists = $playlistRepository->findAll();
-        $myPlaylistSubscriptions = $playlistSubscriptionRepository->findAll();
+        $user = $this->getUser();
+
+        if (null === $user) {
+            return $this->redirectToRoute('home');
+        }
+
+        $myPlaylists = $playlistRepository->findAllByUser($user);
+        $myPlaylistSubscriptions = $playlistSubscriptionRepository->findAllByUser($user);
 
         $selectedPlaylistId = $request->query->get('playlist', null);
         $selectedPlaylist = null;

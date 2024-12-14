@@ -51,6 +51,10 @@
 
                     <div class="relative w-full flex text-gray-700 font-medium">
                         <select id="playlist-selector" class="appearance-none w-full bg-white border border-gray-200 px-7 py-3 rounded-md shadow transition">
+                            {% if selectedPlaylist == null %}
+                                <option selected value="">Séléctionner une playlist</option>
+                            {% endif %}
+                            
                             {% for playlist in myPlaylists %}
                                 <option {% if selectedPlaylist and playlist.id == selectedPlaylist.id %}selected{% endif %} value="{{ playlist.id }}">
                                     {{ playlist.name }}
