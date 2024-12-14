@@ -113,6 +113,24 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
                 ->setCreatedAt($createdAt)
                 ->setUpdatedAt($createdAt);
 
+            $alreadyPickMediaIds = [];
+            for ($j = 0; $j < $this->faker->numberBetween(1, 5); ++$j) {
+                $id = $this->faker->randomElement($mediaIds);
+
+                if (in_array($id, $alreadyPickMediaIds)) {
+                    continue;
+                }
+
+                $alreadyPickMediaIds[] = $id;
+                $playlistMedia = (new PlaylistMedia())
+                    ->setMedia($this->mediaRepository->find($id))
+                    ->setPlaylist($playlist)
+                    ->setAddedAt(new \DateTimeImmutable($this->faker->dateTimeBetween('-1 year', 'now')->format('Y-m-d H:i:s')));
+
+                $this->manager->persist($playlistMedia);
+                $playlist->addPlaylistMedia($playlistMedia);
+            }
+
             $this->manager->persist($playlist);
 
             $user->addPlaylist($playlist);

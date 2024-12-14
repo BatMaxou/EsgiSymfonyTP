@@ -10,3 +10,5 @@ App\Entity\PlaylistSubscription:
     playlist: '@playlist_*'
     user: '@user_*'
     subscribedAt: '<dateTimeBetween("-1 year", "now")>'
+
+# playlist media generate duplicate primary key (palylist_id, media_id)
