@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="fr">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="style/style.css" rel="stylesheet">
-    <title>Streemi - Admin - Ajouter un film</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
+{% extends 'base.html.twig' %}
 
-<body class="font-montserrat text-sm bg-white ">
+{% block title %}Streemi - Admin - Ajouter un film{% endblock %}
+
+{% block content %}
     <div class="flex min-h-screen  2xl:max-w-screen-2xl 2xl:mx-auto 2xl:border-x-2 2xl:border-gray-200">
         
         {% include 'components/left-menu.html.twig' %}
@@ -148,5 +141,4 @@
             </section>
         </main>
     </div>
-</body>
-</html>
+{% endblock %}
