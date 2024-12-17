@@ -72,7 +72,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             ->setAccountStatus($this->faker->randomElement(AccountStatusEnum::cases()))
             ->setCurrentSubscription($this->subscriptionRepository->find($this->faker->randomElement($subscriptionIds)));
 
-        return $user->setPassword($this->userPasswordHasher->hashPassword($user, 'test123'));
+        return $user->setPassword('test123');
     }
 
     /**

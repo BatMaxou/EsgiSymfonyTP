@@ -26,6 +26,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $email = null;
 
+    private ?string $plainPassword = null;
+
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
@@ -113,14 +115,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password, $alreadyHashed = false): static
     {
-        $this->password = $password;
+        if ($alreadyHashed) {
+            $this->password = $password;
+        } else {
+            $this->plainPassword = $password;
+            $this->password = null;
+        }
 
         return $this;
     }
@@ -312,7 +324,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function eraseCredentials(): void {}
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
+    }
 
     public function getResetToken(): ?string
     {

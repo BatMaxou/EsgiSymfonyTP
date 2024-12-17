@@ -87,7 +87,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/reset', name: 'reset')]
-    public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function reset(Request $request): Response
     {
         $token = $request->query->get('token', null);
         if (!$token) {
@@ -104,7 +104,6 @@ class SecurityController extends AbstractController
             $password = $request->request->get('_password', null);
             $confirm = $request->request->get('_confirm', null);
             if ($password && $confirm && $password === $confirm) {
-                $password = $userPasswordHasher->hashPassword($user, $password);
                 $user->setPassword($password);
                 $user->setResetToken(null);
                 $this->em->flush();
